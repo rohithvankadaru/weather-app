@@ -1,14 +1,19 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { userContext } from '../context/userContext';
+import { useNavigate } from 'react-router-dom';
 
 
-export const SignUp = ({ setToken }) => {
+export const SignUp = () => {
+
+    const {setToken} = useContext(userContext);
 
     const [user, setUser] = useState({
         name: '', email: '', password: '', cpassword: ''
     });
 
     const { name, email, password, cpassword } = user;
+    const navigate = useNavigate();
 
     function handleInput(event) {
         setUser({ ...user, [event.target.name]: event.target.value });
@@ -30,6 +35,7 @@ export const SignUp = ({ setToken }) => {
 
                     setToken(response.data.data.token);
                     localStorage.setItem('token', response.data.data.token);
+                    navigate('/dashboard')
                 })
                 .catch(error => console.log(error.response.data.message));
         }
